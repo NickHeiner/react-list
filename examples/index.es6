@@ -52,14 +52,26 @@ const renderGridLine = (row, key) =>
   />;
 renderGridLine.toJSON = () => renderGridLine.toString();
 
-const renderTable = (items, ref) => <table className='example-table'>
-  <thead>
-    <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>
-  </thead>
-  <tbody ref={ref}>
-    {items}
-  </tbody>
-</table>;
+let tbodyElem;
+let reactListRef;
+const getRef = (ref) => {
+  tbodyElem = ref;
+  reactListRef(ref);
+};
+const tbodyScrollParentGetter = () => tbodyElem;
+tbodyScrollParentGetter.toJSON = tbodyScrollParentGetter.toString();
+
+const renderTable = (items, ref) => {
+  reactListRef = ref;
+  return (<table className='example-table'>
+    <thead>
+      <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>
+    </thead>
+    <tbody ref={getRef}>
+      {items}
+    </tbody>
+  </table>);
+};
 renderTable.toJSON = () => renderTable.toString();
 const renderTableItem = (index, key) =>
   <tr key={key} className={'item' + (index % 2 ? '' : ' even')}>
@@ -72,6 +84,7 @@ const examples = [
     length: 10000,
     itemRenderer: renderTableItem,
     itemsRenderer: renderTable,
+    scrollParentGetter: tbodyScrollParentGetter,
     nonReactListProps: {
       componentClassName: 'table-component'
     }
@@ -151,7 +164,7 @@ const examples = [
 
 export default class Root extends React.Component {
   renderExamples() {
-    return examples.map((props, key) => {
+    return examples.slice(0, 1).map((props, key) => {
       const {nonReactListProps, ...reactListProps} = props;
       const componentClassName =
         nonReactListProps && nonReactListProps.componentClassName ?
