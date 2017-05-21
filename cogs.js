@@ -7,10 +7,10 @@ module.exports = {
         presets: ['es2015', 'stage-1', 'react'],
         plugins: [['transform-es2015-modules-umd', {
           globals: {
-            react: 'React',
-            'prop-types': 'PropTypes',
-            'react-dom': 'ReactDOM',
-            'react-list': 'ReactList'
+            // react: 'React',
+            // 'prop-types': 'PropTypes',
+            // 'react-dom': 'ReactDOM',
+            // 'react-list': 'ReactList'
           },
           moduleId: 'react-list',
           exactGlobals: true

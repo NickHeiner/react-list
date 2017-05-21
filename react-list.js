@@ -7,8 +7,8 @@
     var mod = {
       exports: {}
     };
-    factory(mod, global.PropTypes, global.React, global.ReactDOM);
-    global.ReactList = mod.exports;
+    factory(mod, global.propTypes, global.react, global.reactDom);
+    global.reactList = mod.exports;
   }
 })(this, function (_module2, _propTypes, _react, _reactDom) {
   'use strict';

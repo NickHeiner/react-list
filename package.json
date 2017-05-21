@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/orgsync/react-list"
   },
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
   "dependencies": {
     "prop-types": "15"
   },

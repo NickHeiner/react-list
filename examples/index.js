@@ -7,7 +7,7 @@
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.React, global.ReactList);
+    factory(mod.exports, global.react, global.reactList);
     global.index = mod.exports;
   }
 })(this, function (exports, _react, _reactList) {

@@ -1,4 +1,4 @@
-import module from 'module';
+// import module from 'module';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
@@ -43,7 +43,7 @@ const isEqualSubset = (a, b) => {
   return true;
 };
 
-module.exports = class ReactList extends Component {
+export default class ReactList extends Component {
   static displayName = 'ReactList';
 
   static propTypes = {

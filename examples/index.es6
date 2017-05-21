@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactList from 'react-list';
+import ReactDOM from 'react-dom';
+import ReactList from '../react-list.es6';
 
 const renderItem = (index, key) =>
   <div key={key} className={'item' + (index % 2 ? '' : ' even')}>
@@ -123,7 +124,9 @@ const examples = [
   }
 ];
 
-export default class extends React.Component {
+
+
+export default class Root extends React.Component {
   renderExamples() {
     return examples.map((props, key) =>
       <div key={key} className={`example axis-${props.axis}`}>
@@ -150,3 +153,8 @@ export default class extends React.Component {
     );
   }
 }
+
+window.addEventListener('load', () => ReactDOM.render(
+  <Root />,
+  document.getElementById('main')
+));
