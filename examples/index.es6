@@ -52,9 +52,9 @@ const renderGridLine = (row, key) =>
   />;
 renderGridLine.toJSON = () => renderGridLine.toString();
 
-const renderTable = (items, ref) => <table>
+const renderTable = (items, ref) => <table className='example-table'>
   <thead>
-    <tr><td>Col 1</td><td>Col 2</td></tr>
+    <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>
   </thead>
   <tbody ref={ref}>
     {items}
@@ -71,7 +71,10 @@ const examples = [
   {
     length: 10000,
     itemRenderer: renderTableItem,
-    itemsRenderer: renderTable
+    itemsRenderer: renderTable,
+    nonReactListProps: {
+      componentClassName: 'table-component'
+    }
   },
   {
     length: 10000,
@@ -148,14 +151,20 @@ const examples = [
 
 export default class Root extends React.Component {
   renderExamples() {
-    return examples.map((props, key) =>
-      <div key={key} className={`example axis-${props.axis}`}>
+    return examples.map((props, key) => {
+      const {nonReactListProps, ...reactListProps} = props;
+      const componentClassName =
+        nonReactListProps && nonReactListProps.componentClassName ?
+          nonReactListProps.componentClassName : 'component';
+      return (<div key={key} className={`example axis-${props.axis}`}>
         <strong>Props</strong>
-        <pre className='props'>{JSON.stringify(props, null, 2)}</pre>
+        <pre className='props'>{JSON.stringify(reactListProps, null, 2)}</pre>
         <strong>Component</strong>
-        <div className='component'><ReactList {...props} /></div>
-      </div>
-    );
+        <div className={componentClassName}>
+          <ReactList {...reactListProps} />
+        </div>
+      </div>);
+    });
   }
 
   render() {

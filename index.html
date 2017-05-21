@@ -53,6 +53,11 @@
         -webkit-overflow-scrolling: touch;
       }
 
+      .table-component {
+        border: 10px solid #38afd4;
+        border-radius: 5px;
+      }
+
       .item {
         background: linear-gradient(#fff, #eee);
         line-height: 30px;
@@ -81,6 +86,17 @@
 
       .even {
         background: linear-gradient(#ddd, #ccc);
+      }
+
+      .example-table td, .example-table th {
+        width: 200px;
+        text-align: center;
+      }
+
+      .example-table tbody {
+        display: block;
+        max-height: 65vh;
+        overflow: auto;
       }
     </style>
   </head>
