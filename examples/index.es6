@@ -79,7 +79,34 @@ const renderTableItem = (index, key) =>
   </tr>;
 renderTableItem.toJSON = () => renderItem.toString();
 
+/*const renderVariableHeightTableItem = (index, key) =>
+  <tr key={key}
+    className={'item' + (index % 2 ? '' : ' even')}
+    style={{height: `${getHeight(index)}px`}}>
+    <td>{index} col 1</td><td>{index} col 2</td>
+  </tr>;*/
+
 const examples = [
+  // {
+  //   length: 10000,
+  //   itemRenderer: renderVariableHeightTableItem,
+  //   itemsRenderer: renderTable,
+  //   scrollParentGetter: tbodyScrollParentGetter,
+  //   type: 'variable',
+  //   nonReactListProps: {
+  //     componentClassName: 'table-component'
+  //   }
+  // },
+  {
+    length: 10000,
+    itemRenderer: renderTableItem,
+    itemsRenderer: renderTable,
+    scrollParentGetter: tbodyScrollParentGetter,
+    type: 'uniform',
+    nonReactListProps: {
+      componentClassName: 'table-component'
+    }
+  },
   {
     length: 10000,
     itemRenderer: renderTableItem,
