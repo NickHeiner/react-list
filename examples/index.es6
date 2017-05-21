@@ -52,7 +52,27 @@ const renderGridLine = (row, key) =>
   />;
 renderGridLine.toJSON = () => renderGridLine.toString();
 
+const renderTable = (items, ref) => <table>
+  <thead>
+    <tr><td>Col 1</td><td>Col 2</td></tr>
+  </thead>
+  <tbody ref={ref}>
+    {items}
+  </tbody>
+</table>;
+renderTable.toJSON = () => renderTable.toString();
+const renderTableItem = (index, key) =>
+  <tr key={key} className={'item' + (index % 2 ? '' : ' even')}>
+    <td>{index} col 1</td><td>{index} col 2</td>
+  </tr>;
+renderTableItem.toJSON = () => renderItem.toString();
+
 const examples = [
+  {
+    length: 10000,
+    itemRenderer: renderTableItem,
+    itemsRenderer: renderTable
+  },
   {
     length: 10000,
     itemRenderer: renderVariableHeightItem
