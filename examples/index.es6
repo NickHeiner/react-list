@@ -63,15 +63,15 @@ tbodyScrollParentGetter.toJSON = tbodyScrollParentGetter.toString();
 
 const renderTable = (items, ref, listPosition) => {
   reactListRef = ref;
-  const {x, size} = listPosition;
+  const {y, size} = listPosition;
   return (<table className='example-table'>
     <thead>
       <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>
     </thead>
     <tbody ref={getRef}>
-      <tr aria-hidden style={{height: `${x}px`}} />
+      <tr aria-hidden style={{height: `${y}px`}} />
       {items}
-      <tr aria-hidden style={{height: `${size - x}px`}} />
+      <tr aria-hidden style={{height: `${size - y}px`}} />
     </tbody>
   </table>);
 };
@@ -104,7 +104,7 @@ const examples = [
   //   }
   // },
   {
-    length: 10000,
+    length: 1000,
     itemRenderer: renderTableItem,
     itemsRenderer: renderTable,
     scrollParentGetter: tbodyScrollParentGetter,
