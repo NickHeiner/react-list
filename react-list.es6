@@ -163,6 +163,10 @@ export default class ReactList extends Component {
       scrollParent[scrollKey];
 
     if (this.props.fixedHeaderTable) {
+      const spacerTop = scrollParent.children[0].getBoundingClientRect().top;
+      if (spacerTop < 0) {
+        return actual + spacerTop;
+      }
       return actual;
     }
 
@@ -211,6 +215,7 @@ export default class ReactList extends Component {
     if (this.hasDeterminateSize()) {
       end = Math.min(end, this.getSpaceBefore(this.props.length));
     }
+    console.log('start', start);
     return {start, end};
   }
 

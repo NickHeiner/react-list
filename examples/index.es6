@@ -61,18 +61,22 @@ const getRef = (ref) => {
 const tbodyScrollParentGetter = () => tbodyElem;
 tbodyScrollParentGetter.toJSON = tbodyScrollParentGetter.toString();
 
+let topSpacerElem;
+const getTopSpacerRef = (elem) => topSpacerElem = elem;
+
 const renderTable = (items, ref, listPosition) => {
   reactListRef = ref;
   const {y, size} = listPosition;
-  console.log('listPosition y', y, '/32', y / 32);
+  const topOffset = topSpacerElem ? topSpacerElem.getBoundingClientRect().top : 0;
+  const yWithOffset = (Math.min(0, topOffset) * -1) + y;
   return (<table className='example-table'>
     <thead>
       <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>
     </thead>
     <tbody ref={getRef}>
-      <tr aria-hidden style={{height: `${y}px`}} />
+      <tr aria-hidden style={{height: `${yWithOffset}px`}} ref={getTopSpacerRef} />
       {items}
-      <tr aria-hidden style={{height: `${size - y}px`}} />
+      <tr aria-hidden style={{height: `${size - yWithOffset}px`}} />
     </tbody>
   </table>);
 };
