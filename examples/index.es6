@@ -64,6 +64,7 @@ tbodyScrollParentGetter.toJSON = tbodyScrollParentGetter.toString();
 const renderTable = (items, ref, listPosition) => {
   reactListRef = ref;
   const {y, size} = listPosition;
+  console.log('listPosition y', y, '/32', y / 32);
   return (<table className='example-table'>
     <thead>
       <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>

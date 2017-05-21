@@ -161,6 +161,11 @@ export default class ReactList extends Component {
       // whichever has a value.
       document.body[scrollKey] || document.documentElement[scrollKey] :
       scrollParent[scrollKey];
+
+    if (this.props.fixedHeaderTable) {
+      return actual;
+    }
+
     const max = this.getScrollSize() - this.getViewportSize();
     const scroll = Math.max(0, Math.min(actual, max));
     const el = findDOMNode(this);
@@ -323,9 +328,10 @@ export default class ReactList extends Component {
     if (!itemSize || !itemsPerRow) return cb();
 
     const {start, end} = this.getStartAndEnd();
+    const startOffset = this.props.fixedHeaderTable ? this.state.from * itemSize : 0;
 
     const {from, size} = this.constrain(
-      Math.floor(start / itemSize) * itemsPerRow,
+      Math.floor((start - startOffset) / itemSize) * itemsPerRow,
       (Math.ceil((end - start) / itemSize) + 1) * itemsPerRow,
       itemsPerRow,
       this.props
