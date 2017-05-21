@@ -100,7 +100,6 @@ export default class ReactList extends Component {
   }
 
   componentDidUpdate() {
-
     // If the list has reached an unstable state, prevent an infinite loop.
     if (this.unstable) return;
 
@@ -217,7 +216,7 @@ export default class ReactList extends Component {
       return {itemSize, itemsPerRow};
     }
 
-    const itemEls = findDOMNode(this.items).children;
+    const itemEls = this.getItemEls();
     if (!itemEls.length) return {};
 
     const firstEl = itemEls[0];
@@ -268,7 +267,7 @@ export default class ReactList extends Component {
 
   updateSimpleFrame(cb) {
     const {end} = this.getStartAndEnd();
-    const itemEls = findDOMNode(this.items).children;
+    const itemEls = this.getItemEls();
     let elEnd = 0;
 
     if (itemEls.length) {
@@ -360,10 +359,14 @@ export default class ReactList extends Component {
     return cache[index] = space;
   }
 
+  getItemEls() {
+    return this.props.getItemsDOMNodes ? this.props.getItemsDOMNodes() : findDOMNode(this.items).children
+  }
+
   cacheSizes() {
     const {cache} = this;
     const {from} = this.state;
-    const itemEls = findDOMNode(this.items).children;
+    const itemEls = this.getItemEls();
     const sizeKey = OFFSET_SIZE_KEYS[this.props.axis];
     for (let i = 0, l = itemEls.length; i < l; ++i) {
       cache[from + i] = itemEls[i][sizeKey];
@@ -443,28 +446,39 @@ export default class ReactList extends Component {
     const {itemRenderer, itemsRenderer} = this.props;
     const {from, size} = this.state;
     const items = [];
+    const listPosition = this.getListPosition();
+
     for (let i = 0; i < size; ++i) items.push(itemRenderer(from + i, i));
-    return itemsRenderer(items, c => this.items = c);
+    return itemsRenderer(items, c => this.items = c, listPosition);
   }
 
-  render() {
-    const {axis, length, type, useTranslate3d} = this.props;
+  getListPosition() {
+    const {axis, length} = this.props;
     const {from, itemsPerRow} = this.state;
 
-    const items = this.renderItems();
-    if (type === 'simple') return items;
-
-    const style = {position: 'relative'};
     const cache = {};
     const bottom = Math.ceil(length / itemsPerRow) * itemsPerRow;
     const size = this.getSpaceBefore(bottom, cache);
+    const offset = this.getSpaceBefore(from, cache);
+    const x = axis === 'x' ? offset : 0;
+    const y = axis === 'y' ? offset : 0;
+
+    return {x, y, size};
+  }
+
+  render() {
+    const {axis, type, useTranslate3d, fixedHeaderTable} = this.props;
+
+    const items = this.renderItems();
+    if (type === 'simple' || fixedHeaderTable) return items;
+
+    const {x, y, size} = this.getListPosition();
+
+    const style = {position: 'relative'};
     if (size) {
       style[SIZE_KEYS[axis]] = size;
       if (axis === 'x') style.overflowX = 'hidden';
     }
-    const offset = this.getSpaceBefore(from, cache);
-    const x = axis === 'x' ? offset : 0;
-    const y = axis === 'y' ? offset : 0;
     const transform =
       useTranslate3d ?
       `translate3d(${x}px, ${y}px, 0)` :

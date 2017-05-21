@@ -61,14 +61,17 @@ const getRef = (ref) => {
 const tbodyScrollParentGetter = () => tbodyElem;
 tbodyScrollParentGetter.toJSON = tbodyScrollParentGetter.toString();
 
-const renderTable = (items, ref) => {
+const renderTable = (items, ref, listPosition) => {
   reactListRef = ref;
+  const {x, size} = listPosition;
   return (<table className='example-table'>
     <thead>
       <tr><th>Fized Header Col 1</th><th>Fixed Header Col 2</th></tr>
     </thead>
     <tbody ref={getRef}>
+      <tr aria-hidden style={{height: `${x}px`}} />
       {items}
+      <tr aria-hidden style={{height: `${size - x}px`}} />
     </tbody>
   </table>);
 };
@@ -78,6 +81,9 @@ const renderTableItem = (index, key) =>
     <td>{index} col 1</td><td>{index} col 2</td>
   </tr>;
 renderTableItem.toJSON = () => renderItem.toString();
+
+const getItemsDOMNodes = () => Array.prototype.slice.call(tbodyElem.children, 1, -1);
+getItemsDOMNodes.toJSON = getItemsDOMNodes.toString();
 
 /*const renderVariableHeightTableItem = (index, key) =>
   <tr key={key}
@@ -102,6 +108,9 @@ const examples = [
     itemRenderer: renderTableItem,
     itemsRenderer: renderTable,
     scrollParentGetter: tbodyScrollParentGetter,
+    fixedHeaderTable: true,
+    getItemsDOMNodes,
+    useStaticSize: true,
     type: 'uniform',
     nonReactListProps: {
       componentClassName: 'table-component'
